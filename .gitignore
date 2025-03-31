@@ -34,8 +34,4 @@ ENV/
 
 # Database
 *.sqlite3
-*.db
-
-# Project specific
-data_cache/
-ml_models/*.joblib 
+*.db 
