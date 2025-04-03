@@ -26,16 +26,30 @@ const DelayPrediction = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Format datetime strings for API
+    // Create departure date object for extracting day_of_week and month
+    const departureDate = new Date(formData.scheduled_departure);
+    
+    // Format datetime strings for API and include required fields
     const submissionData = {
       ...formData,
-      scheduled_departure: new Date(formData.scheduled_departure).toISOString(),
-      scheduled_arrival: new Date(formData.scheduled_arrival).toISOString()
+      scheduled_departure: departureDate.toISOString(),
+      scheduled_arrival: new Date(formData.scheduled_arrival).toISOString(),
+      // Add day_of_week (0 = Monday, 6 = Sunday) and month (1-12)
+      day_of_week: departureDate.getDay() === 0 ? 6 : departureDate.getDay() - 1, // Convert Sunday=0 to Sunday=6
+      month: departureDate.getMonth() + 1, // JavaScript months are 0-indexed
+      // Add empty values for fields that might be expected by the backend
+      previous_flight_id: null,
+      previous_flight_delay: null,
+      aircraft_info: {
+        aircraft_type: null,
+        aircraft_age: null
+      }
     };
 
     try {
       setLoading(true);
       setError(null);
+      console.log('Sending prediction request with data:', submissionData);
       const response = await axios.post('/predict-delay', submissionData);
       setPrediction(response.data);
     } catch (err) {

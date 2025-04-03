@@ -73,8 +73,12 @@ def extract_features(flight_data, db=None):
     flight_data['aircraft_type_available'] = flight_data['aircraft_type'].notna().astype(int)
     flight_data['aircraft_age'] = flight_data.get('aircraft_age', np.nan)
     
-    # 2. Previous leg delay
-    flight_data['has_previous_leg'] = flight_data['previous_flight_id'].notna().astype(int)
+    # 2. Previous leg delay - safely check if columns exist
+    if 'previous_flight_id' in flight_data.columns:
+        flight_data['has_previous_leg'] = flight_data['previous_flight_id'].notna().astype(int)
+    else:
+        flight_data['has_previous_leg'] = 0  # Default to no previous leg
+        
     flight_data['previous_leg_delay'] = flight_data.get('previous_flight_delay', 0)
     
     # 3. Holiday indicator
@@ -463,7 +467,6 @@ def train_model(db: Session):
         random_state=42
     )
     
-    # Only fit if we have actual delayed flights
     if sum(is_delayed) > 0:
         # Filter to only delayed flights for regression
         delayed_idx = is_delayed[is_delayed == 1].index

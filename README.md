@@ -28,6 +28,7 @@ A FastAPI-based API for an airport operations dashboard that provides flight inf
 
 - Python 3.7+
 - PostgreSQL server running
+- Node.js and npm (for the frontend)
 
 ## Setup
 
@@ -59,6 +60,47 @@ python server.py
 ```
 
 The server will start running at `http://localhost:8000`. The ML model will be initialized automatically on startup using the generated data.
+
+## Running the Frontend
+
+To set up and run the frontend application:
+
+1. Navigate to the frontend directory:
+```bash
+cd frontend
+```
+
+2. Install the frontend dependencies:
+```bash
+npm install
+```
+
+3. Start the development server:
+```bash
+npm run dev
+```
+
+The frontend will start running, typically at `http://localhost:5173`. It automatically connects to the backend API running on port 8000, so make sure the backend server is running before starting the frontend.
+
+4. For a production build:
+```bash
+npm run build
+```
+
+5. To preview the production build:
+```bash
+npm run preview
+```
+
+## Screenshots
+
+Here are some screenshots of the Airport Operations Dashboard in action:
+
+### Flight Dashboard
+![Flight Dashboard](screenShots/063211f6-361e-40f4-a3e6-4b3e66ff1546.png)
+
+### Delay Prediction Tool
+![Delay Prediction Tool](screenShots/8d7f159a-b927-4fe8-a4ec-da681fd0346e.png)
 
 ## Testing Features
 
